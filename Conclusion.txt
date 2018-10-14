@@ -1,0 +1,3 @@
+PREGUNTA 3:
+Encontramos que las dos variables con mayor correlacion son el número de vistas y los likes con un valor de 0.85, tiene sentido si pensamos que a mayor numero de vistas existe mayor probabilidad existe que el video tenga una gran cantidad de likes. Ademas se aplico distinto color a cada punto con el fin de distingir a que categoria pertenecen, finalmente si muestran en forma circulas los puntos donde el número de likes es mayor al de dislikes y en forma de triangulos en el caso contrario, notando una clara mayoria en el numero de likes que de dislikes.
+PREGUNTA 5:
