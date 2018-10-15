@@ -1,5 +1,5 @@
 ---
-title: "Laboratorio 1, Estadística Computacional"
+title: "Laboratorio 1, Estad�???stica Computacional"
 output: pdf_document
 ---
 
@@ -9,13 +9,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##I. Integrantes
   + Juan Pablo León (201473047-0)
-  + Daniel Águila ()
+  + Daniel Águila (201473106-k)
 
 ## II. Preguntas
 ###Pregunta 1
 Definimos los siguientes tres requerimientos de tipo descriptivo:
 
-    1. ¿Qué categoría posee la mayor razón de likes vs dislikes?
+    1. ¿Qué categor�???a posee la mayor razón de likes vs dislikes?
     
     2. ¿Qué categoria tiene la mayor cantidad de comentarios?
     
@@ -38,10 +38,10 @@ razonLikesDislikes = likesPorCategoria/dislikesPorCategoria
 op = par(mar=c(4,10,2,1) + 0.1 )
 grafico1 = barplot(razonLikesDislikes, xpd=NA, las=1, horiz=TRUE, col="blue",
         xlab="Razón Likes/Dislikes", 
-        main="Razón Likes/Dislikes por Categoría")
+        main="Razón Likes/Dislikes por Categor�???a")
 par(op)
 ```
-Donde podemos observar cláramente que la categoría de "Sciencia Ficción y Fantasía" tiene la mejor razón likes/dislikes, seguido de cerca por "Mascotas y Animales" y "Educación."
+Donde podemos observar cláramente que la categor�???a de "Sciencia Ficción y Fantas�???a" tiene la mejor razón likes/dislikes, seguido de cerca por "Mascotas y Animales" y "Educación."
 
 Similarmente, para nuestro segundo requerimiento tenemos:
 
@@ -50,11 +50,11 @@ comentariosPorCategoria = tapply(X=comment_count, INDEX=category, FUN=sum, na.rm
 
 op = par(mar=c(4,10,2,1) + 0.1)
 grafico2 = barplot(comentariosPorCategoria, las=1, horiz=TRUE, col="red",
-                  xlab="Cantidad de Comentarios", main="Cantidad de Comentarios por Categoría")
+                  xlab="Cantidad de Comentarios", main="Cantidad de Comentarios por Categor�???a")
 par(op)
 ```
 
-Que nos dice que la categoría con más comentarios es "Música" seguido por "Entretenimiento."
+Que nos dice que la categor�???a con más comentarios es "Música" seguido por "Entretenimiento."
 
 Finalmente, para nuestro tercer requerimiento se obtuvo el siguiente gráfico:
 
@@ -67,14 +67,14 @@ op = par(mar=c(4,10,2,1) + 0.1)
 grafico3 = barplot(comentariosDesactivadosPorCategoria, las=1, horiz=TRUE,
                    col="green", cex.main=0.85,
                    xlab="Nº de Videos con Comentarios Desactivados", 
-                   main="Cantidad de Videos con Comentarios Desactivados por Categoría")
+                   main="Cantidad de Videos con Comentarios Desactivados por Categor�???a")
 par(op)
 ```
 
-Donde se aprecia que la categoría con más video con los comentarios desactivados es "Entretenimiento," seguido de "Música.""
+Donde se aprecia que la categor�???a con más video con los comentarios desactivados es "Entretenimiento," seguido de "Música.""
 
 ###Pregunta 2
-Antes de crear el correlograma debemos asegurarnos de que la columna "X" (la primera columna de la tabla) no sea considerada, pues esta sirve solamente como contador y no entrega información relevante, además aprovechamos de cargar la librería necesaria:
+Antes de crear el correlograma debemos asegurarnos de que la columna "X" (la primera columna de la tabla) no sea considerada, pues esta sirve solamente como contador y no entrega información relevante, además aprovechamos de cargar la librer�???a necesaria:
 
 ```{r 2.1, message=FALSE}
 datos$X = NULL
@@ -100,7 +100,7 @@ corrplot(matrizCorrelacion, method="color", col=col(200),
 
 Aquello de interés:
 
-  + No existe una correlación lineal entre la categoría del video y el resto de las variables numéricas.
+  + No existe una correlación lineal entre la categor�???a del video y el resto de las variables numéricas.
     
   + Existe una correlación positiva que tiende a ser del tipo directa entre la cantidad de visitas que tiene un video y su cantidad de likes.
     
@@ -109,14 +109,7 @@ Aquello de interés:
   + Existe una correlación positiva más alta entre la cantidad likes y comentarios que tiene un video que la cantidad de dislikes y comentarios.
     
 ###Pregunta 3
-
-```{r 3.1, message=FALSE}
-library(ggplot2)
-library(labdsv)
-library(rmarkdown)
-```
-
-
+  + En primer lugar creamos un algoritmo con el que encontraremos las columnas numericas de mayor correlaci�n.
 ```{r 3.2, warning=FALSE}
 data<-read.csv("USvideosWithCategories.csv", stringsAsFactors=FALSE)
 cuenta = 0
@@ -124,8 +117,6 @@ mayor = 0
 for(i in 2:18){
   for(j in 2:18){
     if(typeof(data[[i]][1]) == 'integer' && typeof(data[[j]][1]) == 'integer'){
-      #print("numeric")
-      #print(cor(data[i], data[j], method=c("pearson")))
       if(mayor < cor(data[i], data[j]) && data[i] != data[j] ){
         mayor = cor(data[i], data[j], method=c("pearson"))
       }
@@ -134,60 +125,76 @@ for(i in 2:18){
   
 }
 print(mayor)
-ggplot(data, aes(x=log(data$likes), y=log(data$views)))+geom_point(aes(color = factor(data$category),shape = factor(data$dislikes>data$likes)))+stat_smooth(method = "glm",col = "#C42128",se = FALSE,size = 1)+labs(title = "Laboratorio de ESTACA 1",x="Likes",y="Vistas")
-ggplot(data, aes(x=log(data$views), y=log(data$likes/(data$dislikes + 1))))+geom_point(aes(shape=factor(data$comment_count>1000000 %in% c(TRUE) ) , color = factor(data$category)))+stat_smooth(geom = "smooth", method = "glm",col = "#C42128",se = FALSE,size = 1)+labs(title = "Laboratorio de ESTACA 1",x="Likes",y="Ratio")
+```
+  + Encontramos que las dos variables con mayor correlacion son el número de vistas y los likes con un valor de 0.85, tiene sentido si pensamos que a mayor numero de vistas existe mayor probabilidad que el video tenga una gran cantidad de likes, luego creamos el grafico de dispersion entre ambas variables (tener en cuenta que los datos estan calculados en logaritmo base 10:
+
+```{r 3.2, warning=FALSE}
+ggplot(data, aes(x=log(data$likes), y=log(data$views)))
+  +geom_point(
+    aes(color = factor(data$category),shape=factor(data$dislikes>data$likes))
+    )
+  +stat_smooth(method = "glm",col = "#C42128",se = FALSE,size = 1)
+  +labs(title = "Laboratorio de ESTACA 1",x="Likes",y="Vistas")
 ```
 
-Encontramos que las dos variables con mayor correlacion son el número de vistas y los likes con un valor de 0.85, tiene sentido si pensamos que a mayor numero de vistas existe mayor probabilidad existe que el video tenga una gran cantidad de likes. Ademas se aplico distinto color a cada punto con el fin de distingir a que categoria pertenecen, finalmente si muestran en forma circulas los puntos donde el número de likes es mayor al de dislikes y en forma de triangulos en el caso contrario, notando una clara mayoria en el numero de likes que de dislikes
+  + Ademas se aplico distinto color a cada punto con el fin de distingir a que categoria pertenecen, finalmente si muestran en forma circulas los puntos donde el número de likes es mayor al de dislikes y en forma de triangulos en el caso contrario, notando una clara mayoria en el numero de likes que de dislikes
 
 ###Pregunta 4
+  +Al igual que la pregunta anterior hacemos el grafico pero esta vez con la relaci�n entre la cantidad de vistas y el ratio (likes/dislikes+1):  
+```{r 5, warning=FALSE}
+ggplot(data, aes(x=log(data$views), y=log(data$likes/(data$dislikes + 1))))+geom_point(aes(shape=factor(data$comment_count>100 %in% c(TRUE) ) , color = factor(data$category)))+stat_smooth(geom = "smooth", method = "glm",col = "#C42128",se = FALSE,size = 1)+labs(title = "Ratio vs Likes",x="Likes",y="Ratio")
+```
+  +La recta tiene una pendiente baja lo cual refleja que el ratio en la gran mayoria de los casos ronda un solo valor promedio, ademas se ve que el ratio y los likes son directamente proporcionales.  
+  + El valor del ratio es util para conocer la proporcion entre el n�mero de likes sobre el de dislikes, teniendo el ratio un valor entre 0 y 1 quiere decir que la cantidad de dislikes es mayor a la de likes, y en caso contrario, es decir 1 o mayor los likes sobrepasan a los dislikes de forma proporcional al n�mero obtenido.
 
 ###Pregunta 5
-Para observar los outliers de los likes y dislikes entre las distintas categorías generamos los siguientes gráficos de cajas:
-
+  +Para observar los outliers de los likes y dislikes entre las distintas categor�as generamos los siguientes gr�ficos de cajas:
 ```{r 5, warning=FALSE}
+
 op = par(mar=c(3,10,2,1) + 0.1)
 boxplot(log(likes) ~ category, data=datos, las=1, horizontal=TRUE,
-        main="Outliers, Likes por Categoría (Escala Logarítmica)",
+        main="Outliers, Likes por Categor�a (Escala Logar�tmica)",
         xlabel="Cantidad de Likes")
 par(op)
 
 op = par(mar=c(3,10,2,1) + 0.1)
 boxplot(log(dislikes) ~ category, data=datos, las=1, horizontal=TRUE,
-        main="Outliers, Dislikes por Categoría (Escala Logarítmica)",
+        main="Outliers, Dislikes por Categor�a (Escala Logar�tmica)",
         xlabel="Cantidad de Likes")
 par(op)
-
 ```
+
 
 Para el caso de la cantidad de likes:
 
- + Las categorías "Sciencia Ficción/Fantasía," "Sin Fines de Lucro & Activismo," "Noticias y Política" y "Autos & Vehículos" no tienen casi valores extremos fuera de sus gráficos de cajas.
- + Se puede observar una gran cantidad de outliers tanto sobre como por debajo del gráfico de caja de las categorías "Entretenimiento" y "Educación."
- + La gran mayoría de las categorías poseen outliers que se encuentran por debajo de sus gráficos de cajas.
+ + Las categor�???as "Sciencia Ficción/Fantas�???a," "Sin Fines de Lucro & Activismo," "Noticias y Pol�???tica" y "Autos & Veh�???culos" no tienen casi valores extremos fuera de sus gráficos de cajas.
+ + Se puede observar una gran cantidad de outliers tanto sobre como por debajo del gráfico de caja de las categor�???as "Entretenimiento" y "Educación."
+ + La gran mayor�???a de las categor�???as poseen outliers que se encuentran por debajo de sus gráficos de cajas.
  
 Para el caso de la cantidad de dislikes:
 
- + Se puede observar que la cantidad de outliers en las categorías de "Deportes," "Sciencia y Tecnología," "Mascotas y Animales," "Gente y Blogs" y "Películas y Animación" se ha reducido de manera apreciable en comparación con el caso de la cantidad de likes.
- + La cantidad de outliers en las categorías "Sciencia Ficción/Fantasía," "Sin Fines de Lucro & Activismo," "Noticias y Política" y "Autos & Vehículos" es similar a la cantidad de outliers en el caso de la cantidad de likes.
- + La mayoría de las categorías tienden a tener outliers tanto debajo como por sobre su gráfico de caja, de manera que parecen estár mejor distribuídos que en el caso de la cantidad de likes.
+ + Se puede observar que la cantidad de outliers en las categor�???as de "Deportes," "Sciencia y Tecnolog�???a," "Mascotas y Animales," "Gente y Blogs" y "Pel�???culas y Animación" se ha reducido de manera apreciable en comparación con el caso de la cantidad de likes.
+ + La cantidad de outliers en las categor�???as "Sciencia Ficción/Fantas�???a," "Sin Fines de Lucro & Activismo," "Noticias y Pol�???tica" y "Autos & Veh�???culos" es similar a la cantidad de outliers en el caso de la cantidad de likes.
+ + La mayor�???a de las categor�???as tienden a tener outliers tanto debajo como por sobre su gráfico de caja, de manera que parecen estár mejor distribu�???dos que en el caso de la cantidad de likes.
  
  
 ##III. Conclusiones
 Dentro de las conclusiones pudimos observar que:
 
-  1. La categoría que posee la mayor razón de cantidad de likes versus cantidad de dislikes es la categoría de "Sciencia Ficción/Fantasía," seguida de "Mascotas y Animales" y "Comedia."
+  1. La categor�???a que posee la mayor razón de cantidad de likes versus cantidad de dislikes es la categor�???a de "Sciencia Ficción/Fantas�???a," seguida de "Mascotas y Animales" y "Comedia."
   
-  2. La categoría que posee la mayor cantidad de comentarios es la de "Música," seguida de lejos por la categoría de "Entretenimiento."
+  2. La categor�???a que posee la mayor cantidad de comentarios es la de "Música," seguida de lejos por la categor�???a de "Entretenimiento."
   
-  3. La categoría que cuenta con la mayor cantidad de videos cuyos comentarios han sido desactivados es la categoría de "Entretenimiento", seguida de las categorías de "Música" y "Howto & Style."
+  3. La categor�???a que cuenta con la mayor cantidad de videos cuyos comentarios han sido desactivados es la categor�???a de "Entretenimiento", seguida de las categor�???as de "Música" y "Howto & Style."
   
-  4. No existe una correlación del tipo lineal entre la categoría de un video y su cantidad de visitas, likes, dislikes y comentarios.
+  4. No existe una correlación del tipo lineal entre la categor�???a de un video y su cantidad de visitas, likes, dislikes y comentarios.
   
   5. Tanto la cantidad de visitas y cantidad de likes como la cantidad de likes y la cantidad de comentarios de un video, tienen una correlación positiva que tiende a ser del tipo directa, o sea, mientras mayor sea una a su vez mayor será la otra.
   
-  6. Los puntos extremos/outliers tienden a estar por debajo del gráfico de cajas en el caso de la cantidad de likes según categoría que en el caso de la cantidad de dislikes, donde la distribución de las anomalías tiende a ser más equilibrada. 
+  6. Los puntos extremos/outliers tienden a estar por debajo del gráfico de cajas en el caso de la cantidad de likes según categor�???a que en el caso de la cantidad de dislikes, donde la distribución de las anomal�???as tiende a ser más equilibrada. 
   
   7. La mediana en los gráficos de cajas del caso de la cantidad de likes tiende a estar por sobre la mediana en el caso de la cantidad de dislikes, lo que puede explicar el por qué de la conclusión anterior.
+  
+  8. El valor del ratio ayuda para conocer principalmente la proporci�n que existe entre entre.  
   
   
