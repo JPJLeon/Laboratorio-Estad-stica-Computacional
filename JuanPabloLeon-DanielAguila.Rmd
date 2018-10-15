@@ -110,7 +110,9 @@ Aquello de interÃ©s:
     
 ###Pregunta 3
   + En primer lugar creamos un algoritmo con el que encontraremos las columnas numericas de mayor correlación.
-```{r 3.2, warning=FALSE}
+```{r 3.1, warning=FALSE}
+library(ggplot2)
+library(labdsv)
 data<-read.csv("USvideosWithCategories.csv", stringsAsFactors=FALSE)
 cuenta = 0
 mayor = 0
@@ -129,20 +131,15 @@ print(mayor)
   + Encontramos que las dos variables con mayor correlacion son el nÃºmero de vistas y los likes con un valor de 0.85, tiene sentido si pensamos que a mayor numero de vistas existe mayor probabilidad que el video tenga una gran cantidad de likes, luego creamos el grafico de dispersion entre ambas variables (tener en cuenta que los datos estan calculados en logaritmo base 10:
 
 ```{r 3.2, warning=FALSE}
-ggplot(data, aes(x=log(data$likes), y=log(data$views)))
-  +geom_point(
-    aes(color = factor(data$category),shape=factor(data$dislikes>data$likes))
-    )
-  +stat_smooth(method = "glm",col = "#C42128",se = FALSE,size = 1)
-  +labs(title = "Laboratorio de ESTACA 1",x="Likes",y="Vistas")
+ggplot(data, aes(x=log(data$likes),y=log(data$views)))+geom_point(aes(color=factor(data$category),shape=factor(data$dislikes>data$likes)))+stat_smooth(method="glm",col = "#C42128",se = FALSE,size = 1)+labs(title = "Likes vs Vistas",x="Likes",y="Vistas")
 ```
 
-  + Ademas se aplico distinto color a cada punto con el fin de distingir a que categoria pertenecen, finalmente si muestran en forma circulas los puntos donde el nÃºmero de likes es mayor al de dislikes y en forma de triangulos en el caso contrario, notando una clara mayoria en el numero de likes que de dislikes
+  + Ademas se aplicó distinto color a cada punto con el fin de distingir a que categoria pertenecen, finalmente si muestran en forma circulas los puntos donde el nÃºmero de likes es mayor al de dislikes y en forma de triangulos en el caso contrario, notando una clara mayoria en el numero de likes que de dislikes
 
 ###Pregunta 4
   +Al igual que la pregunta anterior hacemos el grafico pero esta vez con la relación entre la cantidad de vistas y el ratio (likes/dislikes+1):  
-```{r 5, warning=FALSE}
-ggplot(data, aes(x=log(data$views), y=log(data$likes/(data$dislikes + 1))))+geom_point(aes(shape=factor(data$comment_count>100 %in% c(TRUE) ) , color = factor(data$category)))+stat_smooth(geom = "smooth", method = "glm",col = "#C42128",se = FALSE,size = 1)+labs(title = "Ratio vs Likes",x="Likes",y="Ratio")
+```{r 4, warning=FALSE}
+ggplot(data, aes(x=log(data$views),y=log(data$likes/(data$dislikes+1))))+geom_point(aes(shape=factor(data$comment_count>100 %in% c(TRUE) ),color=factor(data$category)))+stat_smooth(geom="smooth",method="glm",col="#C42128",se=FALSE,size=1)+labs(title="Ratio vs Likes",x="Likes",y="Ratio")
 ```
   +La recta tiene una pendiente baja lo cual refleja que el ratio en la gran mayoria de los casos ronda un solo valor promedio, ademas se ve que el ratio y los likes son directamente proporcionales.  
   + El valor del ratio es util para conocer la proporcion entre el número de likes sobre el de dislikes, teniendo el ratio un valor entre 0 y 1 quiere decir que la cantidad de dislikes es mayor a la de likes, y en caso contrario, es decir 1 o mayor los likes sobrepasan a los dislikes de forma proporcional al número obtenido.
